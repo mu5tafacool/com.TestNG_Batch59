@@ -12,28 +12,40 @@ import java.time.Duration;
 
 public class Driver {
     /*
-    POM'de Driver icin TestBase class'ina extends etmek yerine
-    Driver class'indan static method'lar kullanarak
-    driver olusturup, ilgili ayarlarin yapilmasi
-    ve en sonda driver'in kapatilmasi tercih edilmistir.
-     */
+ POM'de Driver icin TestBase class'ina extends etmek yerine
+ Driver class'indan static method'lar kullanarak
+ driver olusturup, ilgili ayarlarin yapilmasi
+ ve en sonda driver'in kapatilmasi tercih edilmistir.
+ POM'de Driver class'indaki getDriver()'nin obje olusturularak kullanilmasini
+ engellemek icin
+ Singleton pattern kullanimi benimsenmistir.
+ Singleton Pattern : tekli kullanim, bir class'in farkli class'lardan
+ obje olusturularak kullanimini engellemek icin kullanilir.
+ Bunu saglamak icin yapmamiz gereken sey oldukca basit
+ obje olusturmak icin kullanilan constructor'i private yaptiginizda
+ bsaka class'larda Driver class'indan obje olusturulmasi mumkun OLAMAZ
+  */
+    private Driver() {
+
+    }
+
     static WebDriver driver;
 
-    public static WebDriver getDriver(){
+    public static WebDriver getDriver() {
 
-        if (driver==null) {
-            switch (ConfigReader.getProperty("browser")){
-                case "chrome" :
+        if (driver == null) {
+            switch (ConfigReader.getProperty("browser")) {
+                case "chrome":
                     WebDriverManager.chromedriver().setup();
                     driver = new ChromeDriver();
                     break;
-                case "safari" :
+                case "safari":
                     WebDriverManager.safaridriver().setup();
-                    driver=new SafariDriver();
+                    driver = new SafariDriver();
                     break;
-                case "firefox" :
+                case "firefox":
                     WebDriverManager.firefoxdriver().setup();
-                    driver=new FirefoxDriver();
+                    driver = new FirefoxDriver();
                     break;
                 case "headless-chrome":
                     WebDriverManager.chromedriver().setup();
@@ -52,10 +64,10 @@ public class Driver {
         return driver;
     }
 
-    public static void closeDriver(){
-        if (driver!=null){ // driver'a deger atanmissa
+    public static void closeDriver() {
+        if (driver != null) { // driver'a deger atanmissa
             driver.close(); //islemlerden sonra tarayiciyi kapat ve
-            driver=null;    //yeni drive a null ata
+            driver = null;    //yeni drive a null ata
         }
 
     }
